@@ -5,7 +5,7 @@ import Login from "./Login";
 describe("Login Tests", () => {
   let component;
   let testFunction;
-  let event = {};
+  // let event = {};
 
   beforeEach(() => {
     /* 
@@ -13,12 +13,16 @@ describe("Login Tests", () => {
         jest.fn() in order to see how and when they're called
         */
     testFunction = jest.fn();
-    component = mount(<Login />);
+    component = mount(<Login handleClick={testFunction} />);
   });
 
-  it("should call the function", () => {
-    // expect(testFunction).toHaveBeenCalledTimes(0);
-    component.find("button").simulate("click", event);
-    // expect(testFunction).toHaveBeenCalledTimes(1);
+  it("should render a button", () => {
+    expect(component.find("button").length).toEqual(1);
+  });
+
+  it("should call a function on button click", () => {
+    expect(testFunction).toHaveBeenCalledTimes(0);
+    component.simulate("click");
+    expect(testFunction).toHaveBeenCalledTimes(1);
   });
 });
