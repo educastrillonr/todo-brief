@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import Task from "./Task";
 class ToDo extends Component {
   state = {
-    tasks: Object.values(this.props.list),
-    keys: Object.keys(this.props.list)
+    tasks: this.props.list
   };
 
   handleInput = e => {
@@ -29,16 +28,16 @@ class ToDo extends Component {
   };
 
   render() {
-    console.log(this.state.keys);
-    console.log(this.state.tasks);
+    // console.log(this.state.keys);
+    // console.log(this.state.tasks);
 
     return (
       <article>
         <ul>
-          {this.state.tasks.map((task, index) => (
+          {Object.entries(this.state.tasks).map((task, index) => (
             <Task
-              content={task}
-              key={this.state.keys[index]}
+              content={task[1]}
+              key={task[0]}
               delete={() => this.removeTask(index)}
             />
           ))}

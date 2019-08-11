@@ -17,6 +17,7 @@ class App extends Component {
         this.setState({
           user
         });
+        // console.log(this.state.user.uid);
       })
       .catch(error => {
         console.log(error);
@@ -24,10 +25,13 @@ class App extends Component {
   };
 
   render() {
-    return (
+    return !this.state.user ? (
       <div className="App">
         <Login handleClick={this.signIn} />
-        <Lists />
+      </div>
+    ) : (
+      <div className="App">
+        <Lists userID={this.state.user.uid} />
       </div>
     );
   }
