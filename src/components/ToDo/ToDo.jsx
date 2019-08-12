@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import Task from "./Task";
+import firebase, { firestore } from "../../firebase";
 class ToDo extends Component {
   state = {
-    tasks: this.props.list
+    tasks: this.props.list,
+    editValue: "",
+    index: null
   };
 
   handleInput = e => {
@@ -12,23 +15,55 @@ class ToDo extends Component {
       this.setState({
         tasks: copy
       });
+      firestore
+        .collection("todo")
+        .doc(this.props.userID)
+        .update({
+          list: firebase.firestore.FieldValue.arrayUnion(e.target.value)
+        });
       e.target.value = "";
     }
   };
 
-  editTask = (e, index) => {
-    if (e.key === "Enter" && e.target.value !== "") {
-      let copy = [...this.state.tasks];
-      copy[index] = e.target.value;
-      this.setState({
-        tasks: copy
+  editTask = e => {
+    e.preventDefault();
+    const editValue = e.target.value;
+    this.setState({ editValue });
+    // if (e.key === "Enter" && e.target.value !== "") {
+    //   let copy = [...this.state.tasks];
+    //   copy[index] = e.target.value;
+    //   this.setState({
+    //     tasks: copy
+    //   });
+    //   e.target.value = "";
+    // }
+  };
+
+  acceptEdit = index => {
+    let copy = [...this.state.tasks];
+    copy[index] = this.state.editValue;
+    this.setState({
+      tasks: copy
+    });
+    firestore
+      .collection("todo")
+      .doc(this.props.userID)
+      .update({
+        list: copy
       });
-      e.target.value = "";
-    }
+    this.setState({
+      editValue: ""
+    });
   };
 
   removeTask = index => {
     let copy = [...this.state.tasks];
+    firestore
+      .collection("todo")
+      .doc(this.props.userID)
+      .update({
+        list: firebase.firestore.FieldValue.arrayRemove(copy[index])
+      });
     copy.splice(index, 1);
     this.setState({
       tasks: copy
@@ -44,7 +79,10 @@ class ToDo extends Component {
               content={task[1]}
               key={task[0]}
               delete={() => this.removeTask(index)}
-              edit={() => this.editTask(index)}
+              edit={this.editTask}
+              value={this.state.editValue}
+              acceptEdit={() => this.acceptEdit(index)}
+              index={index}
             />
           ))}
           <li>

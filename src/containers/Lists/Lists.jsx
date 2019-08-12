@@ -46,15 +46,77 @@ class Lists extends Component {
     this.componentDidMount();
   };
 
+  // handleAdd = () => {
+  //   this.setState({
+  //     showInput: true
+  //   });
+  // };
+
+  // handleInputTitle = e => {
+  //   // console.log();
+
+  //   this.setState({
+  //     newListTitle: e.target.value
+  //   });
+  // };
+
+  // handleInputTask = e => {
+  //   this.setState({
+  //     newTask: e.target.value
+  //   });
+  //   // console.log(this.state.newListTitle);
+  // };
+
+  // handleSubmit = e => {
+  //   e.preventDefault();
+  //   // console.log(e.target.value);
+  //   firestore
+  //     .collection("todo")
+  //     .doc(this.props.userID)
+  //     .update(
+  //       {
+  //         list: [this.state.newTask]
+  //       }
+  //       // { merge: true }
+  //     );
+  //   this.setState({
+  //     showInput: false
+  //   });
+  //   this.componentDidMount();
+  // };
+
+  // getInputBoxes = () => {
+  //   if (this.state.showInput) {
+  //     return (
+  //       <form onSubmit={this.handleSubmit}>
+  //         <input
+  //           onChange={this.handleInputTitle}
+  //           type="text"
+  //           placeholder="title of your new list"
+  //         />
+  //         <input
+  //           onChange={this.handleInputTask}
+  //           type="text"
+  //           placeholder="first item on the list"
+  //         />
+  //         <button type="submit">submit</button>
+  //       </form>
+  //     );
+  //   }
+  // };
+
   render() {
     return (
       <section>
         {Object.entries(this.state.lists).map(list => (
-          <ToDo list={list[1]} key={list[0]} />
+          <ToDo userID={this.props.userID} list={list[1]} key={list[0]} />
         ))}
-        {Object.entries(this.state.lists).map((list, index) =>
+        {/* {this.getInputBoxes()} */}
+        {/* <button onClick={this.handleAdd}>Add a todo list </button> */}
+
+        {/* {Object.entries(this.state.lists).map((list, index) =>
           console.log(typeof list + "--->" + index)
-        )}
+        )} */}
       </section>
     );
   }

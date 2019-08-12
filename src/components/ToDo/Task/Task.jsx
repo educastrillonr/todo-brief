@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 class Task extends Component {
-  state = { isComplete: false, isEditable: false, value: this.props.content };
+  state = { isComplete: false, isEditable: false };
 
   handleCheckbox = () => {
     this.setState({
@@ -13,6 +13,15 @@ class Task extends Component {
     this.setState({
       isEditable: !this.state.isEditable
     });
+  };
+
+  acceptEdit = e => {
+    if (e.key === "Enter" && e.target.value !== "") {
+      this.setState({
+        isEditable: !this.state.isEditable
+      });
+      this.props.acceptEdit(this.props.index);
+    }
   };
 
   render() {
@@ -34,9 +43,12 @@ class Task extends Component {
         <li style={style}>
           <input
             type="text"
-            value={this.state.value}
-            onKeyUp={this.props.edit}
+            value={this.props.value}
+            placeholder={this.props.content}
+            onChange={this.props.edit}
+            onKeyUp={this.acceptEdit}
           />
+          {/* <button onClick={this.props.acceptEdit}>accept</button> */}
         </li>
       );
     }
