@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 
 class Task extends Component {
-  state = { isComplete: false };
+  state = { isComplete: false, isEditable: false };
+
+  handleCheckbox = () => {
+    this.setState({
+      isComplete: !this.state.isComplete
+    });
+  };
 
   handleClick = () => {
     this.setState({
-      isComplete: !this.state.isComplete
+      isEditable: !this.state.isEditable
     });
   };
 
@@ -13,14 +19,23 @@ class Task extends Component {
     let style = this.state.isComplete
       ? { textDecoration: "line-through" }
       : null;
-    return (
-      <React.Fragment>
-        <li style={style} onClick={this.handleClick}>
-          {this.props.content}
+    if (!this.state.isEditable) {
+      return (
+        <React.Fragment>
+          <li style={style} onClick={this.handleClick}>
+            <input type="checkbox" onClick={this.handleCheckbox} />
+            {this.props.content}
+          </li>
+          <button onClick={this.props.delete}>x</button>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <li style={style}>
+          <input type="text" value={this.props.content} />
         </li>
-        <button onClick={this.props.delete}>x</button>
-      </React.Fragment>
-    );
+      );
+    }
   }
 }
 
