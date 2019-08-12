@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 class Task extends Component {
-  state = { isComplete: false, isEditable: false };
+  state = { isComplete: false, isEditable: false, value: this.props.content };
 
   handleCheckbox = () => {
     this.setState({
@@ -22,9 +22,9 @@ class Task extends Component {
     if (!this.state.isEditable) {
       return (
         <React.Fragment>
-          <li style={style} onClick={this.handleClick}>
+          <li style={style}>
             <input type="checkbox" onClick={this.handleCheckbox} />
-            {this.props.content}
+            <p onClick={this.handleClick}>{this.props.content}</p>
           </li>
           <button onClick={this.props.delete}>x</button>
         </React.Fragment>
@@ -32,7 +32,11 @@ class Task extends Component {
     } else {
       return (
         <li style={style}>
-          <input type="text" value={this.props.content} />
+          <input
+            type="text"
+            value={this.state.value}
+            onKeyUp={this.props.edit}
+          />
         </li>
       );
     }

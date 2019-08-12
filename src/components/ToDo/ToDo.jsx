@@ -16,21 +16,26 @@ class ToDo extends Component {
     }
   };
 
+  editTask = (e, index) => {
+    if (e.key === "Enter" && e.target.value !== "") {
+      let copy = [...this.state.tasks];
+      copy[index] = e.target.value;
+      this.setState({
+        tasks: copy
+      });
+      e.target.value = "";
+    }
+  };
+
   removeTask = index => {
     let copy = [...this.state.tasks];
-    let keysCopy = [...this.state.keys];
     copy.splice(index, 1);
-    keysCopy.splice(index, 1);
     this.setState({
-      tasks: copy,
-      keys: keysCopy
+      tasks: copy
     });
   };
 
   render() {
-    // console.log(this.state.keys);
-    // console.log(this.state.tasks);
-
     return (
       <article>
         <ul>
@@ -39,6 +44,7 @@ class ToDo extends Component {
               content={task[1]}
               key={task[0]}
               delete={() => this.removeTask(index)}
+              edit={() => this.editTask(index)}
             />
           ))}
           <li>
