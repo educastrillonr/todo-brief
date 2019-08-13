@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import Task from "./Task";
 import firebase, { firestore } from "../../firebase";
+import styles from "./ToDo.module.scss";
+
 class ToDo extends Component {
   state = {
     tasks: this.props.list,
     editValue: "",
-    index: null
+    index: null,
+    showFinished: true
   };
 
   handleInput = e => {
@@ -29,14 +32,6 @@ class ToDo extends Component {
     e.preventDefault();
     const editValue = e.target.value;
     this.setState({ editValue });
-    // if (e.key === "Enter" && e.target.value !== "") {
-    //   let copy = [...this.state.tasks];
-    //   copy[index] = e.target.value;
-    //   this.setState({
-    //     tasks: copy
-    //   });
-    //   e.target.value = "";
-    // }
   };
 
   acceptEdit = index => {
@@ -70,9 +65,15 @@ class ToDo extends Component {
     });
   };
 
+  toggleFinishedTasks = () => {
+    this.setState({
+      showFinished: !this.state.showFinished
+    });
+  };
+
   render() {
     return (
-      <article>
+      <article className={styles.wrapper}>
         <ul>
           {Object.entries(this.state.tasks).map((task, index) => (
             <Task
@@ -83,11 +84,16 @@ class ToDo extends Component {
               value={this.state.editValue}
               acceptEdit={() => this.acceptEdit(index)}
               index={index}
+              showFinished={this.state.showFinished}
             />
           ))}
           <li>
             <input type="text" onKeyUp={this.handleInput} />
           </li>
+          <div>
+            <input type="checkbox" onClick={this.toggleFinishedTasks} />
+            <p>Show done tasks</p>
+          </div>
         </ul>
       </article>
     );

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import styles from "./Task.module.scss";
 
 class Task extends Component {
   state = { isComplete: false, isEditable: false };
@@ -28,17 +29,24 @@ class Task extends Component {
     let style = this.state.isComplete
       ? { textDecoration: "line-through" }
       : null;
-    if (!this.state.isEditable) {
+    if (
+      (!this.state.isEditable && this.props.showFinished) ||
+      (!this.state.isEditable &&
+        !this.props.showFinished &&
+        !this.state.isComplete)
+    ) {
       return (
         <React.Fragment>
-          <li style={style}>
+          <li style={style} className={styles.task}>
             <input type="checkbox" onClick={this.handleCheckbox} />
             <p onClick={this.handleClick}>{this.props.content}</p>
+            <button onClick={this.props.delete}>x</button>
           </li>
-          <button onClick={this.props.delete}>x</button>
         </React.Fragment>
       );
-    } else {
+    } else if (!this.props.showFinished && this.state.isComplete) {
+      return null;
+    } else if (this.state.isEditable) {
       return (
         <li style={style}>
           <input
@@ -48,7 +56,6 @@ class Task extends Component {
             onChange={this.props.edit}
             onKeyUp={this.acceptEdit}
           />
-          {/* <button onClick={this.props.acceptEdit}>accept</button> */}
         </li>
       );
     }
