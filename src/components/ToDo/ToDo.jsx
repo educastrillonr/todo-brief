@@ -92,7 +92,7 @@ class ToDo extends Component {
           </li>
           <div>
             <input type="checkbox" onClick={this.toggleFinishedTasks} />
-            <p>Show done tasks</p>
+            <p>Hide done tasks</p>
           </div>
         </ul>
       </article>
