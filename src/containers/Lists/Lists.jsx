@@ -8,8 +8,6 @@ class Lists extends Component {
   };
 
   componentDidMount() {
-    // Use Firebase SDK, firestore object, to fetch collection of top trump cards
-    // onSnapshot() watches the collection in the db & listens for changes
     firestore
       .collection("todo")
       .doc(this.props.userID)

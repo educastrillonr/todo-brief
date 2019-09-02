@@ -17,7 +17,6 @@ class App extends Component {
         this.setState({
           user
         });
-        // console.log(this.state.user.uid);
       })
       .catch(error => {
         console.log(error);
